@@ -3,6 +3,17 @@ const mongoose   = require('mongoose');
 const servidor   = express();
 const funcionarioRoutes = require('./routes/funcionarioRoutes');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+
+servidor.use(express.urlencoded({ extended: true }));
+servidor.use(express.json());
+
+servidor.use('/funcionario', funcionarioRoutes);
+
+// Rota para acessar a documentação
+servidor.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Middleware padrão
 servidor.use(express.urlencoded({ extended: true }));
 servidor.use(express.json());

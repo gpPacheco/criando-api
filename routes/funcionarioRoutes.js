@@ -1,10 +1,60 @@
-const express     = require('express');
-const router      = express.Router();
+const express = require('express');
+const router = express.Router();
 const Funcionario = require('../models/Funcionario');
 
-/*
- * CREATE  ────────────────────────────────────────────────────────────────
- * POST /funcionario
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Funcionario:
+ *       type: object
+ *       required:
+ *         - nome
+ *         - cargo
+ *         - salario
+ *         - contratado
+ *       properties:
+ *         nome:
+ *           type: string
+ *         cargo:
+ *           type: string
+ *         salario:
+ *           type: number
+ *         contratado:
+ *           type: boolean
+ *       example:
+ *         nome: João da Silva
+ *         cargo: Desenvolvedor
+ *         salario: 5000
+ *         contratado: true
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Funcionário
+ *   description: API de gerenciamento de funcionários
+ */
+
+/**
+ * @swagger
+ * /funcionario:
+ *   post:
+ *     summary: Cria um novo funcionário
+ *     tags: [Funcionário]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Funcionario'
+ *     responses:
+ *       201:
+ *         description: Funcionário criado com sucesso
+ *       422:
+ *         description: Dados obrigatórios faltando
+ *       500:
+ *         description: Erro interno no servidor
  */
 router.post('/', async (req, res) => {
   const { nome, cargo, salario, contratado } = req.body;
@@ -28,9 +78,17 @@ router.post('/', async (req, res) => {
   }
 });
 
-/*
- * READ (todos) ───────────────────────────────────────────────────────────
- * GET /funcionario
+/**
+ * @swagger
+ * /funcionario:
+ *   get:
+ *     summary: Lista todos os funcionários
+ *     tags: [Funcionário]
+ *     responses:
+ *       200:
+ *         description: Lista de funcionários
+ *       500:
+ *         description: Erro interno no servidor
  */
 router.get('/', async (_req, res) => {
   try {
@@ -41,9 +99,26 @@ router.get('/', async (_req, res) => {
   }
 });
 
-/*
- * READ (por id) ──────────────────────────────────────────────────────────
- * GET /funcionario/:id
+/**
+ * @swagger
+ * /funcionario/{id}:
+ *   get:
+ *     summary: Retorna um funcionário por ID
+ *     tags: [Funcionário]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do funcionário
+ *     responses:
+ *       200:
+ *         description: Funcionário encontrado
+ *       404:
+ *         description: Funcionário não encontrado
+ *       500:
+ *         description: Erro interno no servidor
  */
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
@@ -59,9 +134,32 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-/*
- * UPDATE ─────────────────────────────────────────────────────────────────
- * PUT /funcionario/:id  (substitui o documento inteiro)
+/**
+ * @swagger
+ * /funcionario/{id}:
+ *   put:
+ *     summary: Atualiza um funcionário por ID
+ *     tags: [Funcionário]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do funcionário
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Funcionario'
+ *     responses:
+ *       200:
+ *         description: Funcionário atualizado com sucesso
+ *       404:
+ *         description: Funcionário não encontrado
+ *       500:
+ *         description: Erro interno no servidor
  */
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
@@ -83,9 +181,26 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-/*
- * DELETE ─────────────────────────────────────────────────────────────────
- * DELETE /funcionario/:id
+/**
+ * @swagger
+ * /funcionario/{id}:
+ *   delete:
+ *     summary: Remove um funcionário por ID
+ *     tags: [Funcionário]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do funcionário
+ *     responses:
+ *       200:
+ *         description: Funcionário removido com sucesso
+ *       404:
+ *         description: Funcionário não encontrado
+ *       500:
+ *         description: Erro interno no servidor
  */
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
